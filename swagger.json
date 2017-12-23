@@ -18,43 +18,7 @@
   "tags": [
     {
       "name": "measurements",
-      "description": "Air quality measurements",
-      "externalDocs": {
-        "description": "Find out more",
-        "url": "http://swagger.io"
-      }
-    },
-    {
-      "name": "locations",
-      "description": "Air quality monitoring stations"
-    },
-    {
-      "name": "latest",
-      "description": "Latest measurements for all stations",
-      "externalDocs": {
-        "description": "Find out more about our store",
-        "url": "http://swagger.io"
-      }
-    },
-    {
-      "name": "countries",
-      "description": "Countries where air quality is monitored"
-    },
-    {
-      "name": "cities",
-      "description": "Cities where air quality is monitored"
-    },
-    {
-      "name": "fetches",
-      "description": "Data fetching events log"
-    },
-    {
-      "name": "parameters",
-      "description": "Air pollutants registered in the system"
-    },
-    {
-      "name": "sources",
-      "description": "Data sources around the world"
+      "description": "Air quality measurements"
     }
   ],
   "schemes": [
