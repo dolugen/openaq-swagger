@@ -1,0 +1,212 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a OpenAPI spec of OpenAQ API.\n\nYou can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).",
+    "version": "1.0.0",
+    "title": "OpenAQ API",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "info@openaq.org"
+    },
+    "license": {
+      "name": "CC BY 4.0",
+      "url": "https://github.com/openaq/openaq-api/blob/develop/LICENSE.md"
+    }
+  },
+  "host": "api.openaq.org",
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "measurements",
+      "description": "Air quality measurements",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "locations",
+      "description": "Air quality monitoring stations"
+    },
+    {
+      "name": "latest",
+      "description": "Latest measurements for all stations",
+      "externalDocs": {
+        "description": "Find out more about our store",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "countries",
+      "description": "Countries where air quality is monitored"
+    },
+    {
+      "name": "cities",
+      "description": "Cities where air quality is monitored"
+    },
+    {
+      "name": "fetches",
+      "description": "Data fetching events log"
+    },
+    {
+      "name": "parameters",
+      "description": "Air pollutants registered in the system"
+    },
+    {
+      "name": "sources",
+      "description": "Data sources around the world"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/measurements": {
+      "get": {
+        "tags": [
+          "measurements"
+        ],
+        "summary": "Get list of measurements",
+        "description": "Provides data about individual measurements",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "country",
+            "in": "query",
+            "description": "Limit results by a certain country.",
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "Limit results by a certain city.",
+            "type": "string"
+          },
+          {
+            "name": "location",
+            "in": "query",
+            "description": "Limit results by a certain location.",
+            "type": "string"
+          },
+          {
+            "name": "parameter",
+            "in": "query",
+            "description": "Limit to certain one or more parameters (ex. `parameter=pm25` or `parameter[]=co&parameter[]=pm25`). Allowed values: pm25, pm10, so2, no2, o3, co, bc ",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "pm25",
+                "pm10",
+                "so2",
+                "no2",
+                "o3",
+                "co",
+                "bc"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "has_geo",
+            "in": "query",
+            "description": "Filter out items that have or do not have geographic information.",
+            "type": "boolean"
+          },
+          {
+            "name": "coordinates",
+            "in": "query",
+            "description": "Center point (`lat, lon`) used to get measurements within a certain area. (ex. `coordinates=40.23,34.17`)",
+            "type": "string"
+          },
+          {
+            "name": "radius",
+            "in": "query",
+            "description": "Radius (in meters) used to get measurements within a certain area, must be used with `coordinates`.",
+            "type": "integer",
+            "default": 2500
+          },
+          {
+            "name": "value_from",
+            "in": "query",
+            "description": "Show results above value threshold, useful in combination with `parameter`.",
+            "type": "integer"
+          },
+          {
+            "name": "value_to",
+            "in": "query",
+            "description": "Show results below value threshold, useful in combination with `parameter`.",
+            "type": "integer"
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "description": "Show results after a certain date. This acts on the `utc` timestamp of each measurement. (ex. `2015-12-20`, or `2015-12-20T09:00:00`)",
+            "type": "string"
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "description": "Show results before a certain date. This acts on the `utc` timestamp of each measurement. (ex. `2015-12-20`, or `2015-12-20T09:00:00`)",
+            "type": "string"
+          },
+          {
+            "name": "order_by",
+            "in": "query",
+            "description": "Order by one or more fields (ex. `order_by=date or order_by[]=value&order_by[]=parameter`). Default value: `date`",
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Define sort order for one or more fields (ex. `sort=desc or sort[]=asc&sort[]=desc`). Default value: `asc`",
+            "type": "string"
+          },
+          {
+            "name": "include_fields",
+            "in": "query",
+            "description": "Include extra fields in the output in addition to default values. Allowed values: `attribution`, `averagingPeriod`, `sourceName`.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "attribution",
+                "averagingPeriod",
+                "sourceName"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Change the number of results returned, max is `10000`. Default value: `100`",
+            "type": "integer"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Paginate through results. Default value: `1`",
+            "type": "integer"
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format for data return. Note that `csv` will return a max of 65,536 results when no limit is set. Default value: `json`. Allowed values: `csv`, `json`.",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about OpenAQ",
+    "url": "https://openaq.org"
+  }
+}
