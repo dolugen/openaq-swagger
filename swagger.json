@@ -89,8 +89,7 @@
             "name": "radius",
             "in": "query",
             "description": "Radius (in meters) used to get measurements within a certain area, must be used with `coordinates`.",
-            "type": "integer",
-            "default": 2500
+            "type": "integer"
           },
           {
             "name": "value_from",
