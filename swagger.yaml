@@ -1,0 +1,1171 @@
+openapi: 3.0.0
+info:
+  title: OpenAQ API
+  description: This is a OpenAPI spec of the OpenAQ API. It's a draft, and may change.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: info@openaq.org
+  license:
+    name: CC BY 4.0
+    url: https://github.com/openaq/openaq-api/blob/develop/LICENSE.md
+  version: 1.0.0-oas3
+externalDocs:
+  description: Find out more about OpenAQ
+  url: https://openaq.org
+servers:
+- url: https://api.openaq.org/v1
+paths:
+  /cities:
+    get:
+      summary: Provides a simple listing of cities within the platform.
+      parameters:
+      - name: country
+        in: query
+        description: Two letter ISO code for a country
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: order_by
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: country
+      - name: sort
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: asc
+      - name: limit
+        in: query
+        description: max records to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 10000.0
+          type: integer
+          format: int32
+          default: 100
+      - name: page
+        in: query
+        description: Paginate through results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      responses:
+        "200":
+          description: Cities Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+  /countries:
+    get:
+      summary: Provides a simple listing of countries within the platform.
+      parameters:
+      - name: order_by
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: name
+      - name: sort
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: asc
+      - name: limit
+        in: query
+        description: max records to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 10000.0
+          type: integer
+          format: int32
+          default: 100
+      - name: page
+        in: query
+        description: Paginate through results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      responses:
+        "200":
+          description: Countries Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+  /fetches:
+    get:
+      summary: Providing data about individual fetch operations that are used to populate
+        data in the platform.
+      parameters:
+      - name: order_by
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: timeStarted
+          enum:
+          - timeStarted
+          - timeEnded
+          - count
+      - name: sort
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: asc
+      - name: limit
+        in: query
+        description: max records to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 10000.0
+          type: integer
+          format: int32
+          default: 100
+      - name: page
+        in: query
+        description: Paginate through results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      responses:
+        "200":
+          description: Fetches Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+  /latest:
+    get:
+      summary: Provides the latest value of each available parameter for every location
+        in the system.
+      parameters:
+      - name: city
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: country
+        in: query
+        description: Two letter ISO code for a country
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: location
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: parameter
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - pm25
+          - pm10
+          - so2
+          - no2
+          - o3
+          - co
+          - bc
+      - name: has_geo
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          nullable: true
+      - name: coordinates
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: radius
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 2500
+      - name: order_by
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: location
+          enum:
+          - location
+          - country
+          - city
+          - measurements
+      - name: sort
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: asc
+      - name: limit
+        in: query
+        description: max records to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 10000.0
+          type: integer
+          format: int32
+          default: 100
+      - name: page
+        in: query
+        description: Paginate through results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      responses:
+        "200":
+          description: Latest Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_3'
+  /locations:
+    get:
+      summary: Provides a list of measurement locations and their meta data.
+      parameters:
+      - name: city
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: country
+        in: query
+        description: Two letter ISO code for a country
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: location
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: parameter
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - pm25
+          - pm10
+          - so2
+          - no2
+          - o3
+          - co
+          - bc
+      - name: has_geo
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          nullable: true
+      - name: coordinates
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: radius
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 2500
+      - name: siteType
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: activationDate
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: completeness
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: number
+      - name: inletHeight
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: number
+      - name: order_by
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: location
+          enum:
+          - location
+          - country
+          - city
+          - measurements
+      - name: sort
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: asc
+      - name: limit
+        in: query
+        description: max records to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 10000.0
+          type: integer
+          format: int32
+          default: 100
+      - name: page
+        in: query
+        description: Paginate through results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      responses:
+        "200":
+          description: Locations Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+  /measurements:
+    get:
+      summary: Get list of measurements
+      description: Provides data about individual measurements
+      parameters:
+      - name: city
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: country
+        in: query
+        description: Two letter ISO code for a country
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: location
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: parameter
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - pm25
+          - pm10
+          - so2
+          - no2
+          - o3
+          - co
+          - bc
+      - name: has_geo
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          nullable: true
+      - name: coordinates
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: radius
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 2500
+      - name: value_from
+        in: query
+        description: Show results above value threshold, useful in combination with
+          `parameter`.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: value_to
+        in: query
+        description: Show results below value threshold, useful in combination with
+          `parameter`.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: date_from
+        in: query
+        description: Show results after a certain date. This acts on the `utc` timestamp
+          of each measurement. (ex. `2015-12-20`, or `2015-12-20T09:00:00`)
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: date_to
+        in: query
+        description: Show results before a certain date. This acts on the `utc` timestamp
+          of each measurement. (ex. `2015-12-20`, or `2015-12-20T09:00:00`)
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: order_by
+        in: query
+        description: 'Order by one or more fields (ex. `order_by=date or order_by[]=value&order_by[]=parameter`).
+          Default value: `date`'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: include_fields
+        in: query
+        description: 'Include extra fields in the output in addition to default values.
+          Allowed values: `attribution`, `averagingPeriod`, `sourceName`.'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - attribution
+            - averagingPeriod
+            - sourceName
+      - name: format
+        in: query
+        description: Format for data return. Note that `csv` will return a max of
+          65,536 results when no limit is set.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: json
+          enum:
+          - json
+          - csv
+      - name: sort
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: asc
+      - name: limit
+        in: query
+        description: max records to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 10000.0
+          type: integer
+          format: int32
+          default: 100
+      - name: page
+        in: query
+        description: Paginate through results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      responses:
+        "200":
+          description: Measurements Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_5'
+  /parameters:
+    get:
+      summary: Provides a simple listing of parameters within the platform.
+      parameters:
+      - name: order_by
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: name
+          enum:
+          - id
+          - name
+          - description
+          - preferredUnit
+      - name: sort
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: asc
+      responses:
+        "200":
+          description: Parameters Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_6'
+  /sources:
+    get:
+      summary: Provides a list of data sources.
+      parameters:
+      - name: order_by
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: name
+          enum:
+          - url
+          - adapter
+          - name
+          - city
+          - country
+          - description
+          - resolution
+          - sourceURL
+          - contacts
+          - active
+      - name: sort
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: asc
+      - name: limit
+        in: query
+        description: max records to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 10000.0
+          type: integer
+          format: int32
+          default: 100
+      - name: page
+        in: query
+        description: Paginate through results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      responses:
+        "200":
+          description: Sources Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_7'
+components:
+  schemas:
+    Meta:
+      type: object
+      properties:
+        name:
+          type: string
+          example: openaq-api
+        license:
+          type: string
+          example: CC BY 4.0
+        website:
+          type: string
+          example: https://docs.openaq.org/
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 100
+        found:
+          type: integer
+          example: 25
+    Coordinates:
+      type: object
+      properties:
+        longitude:
+          type: number
+          example: -120.98825
+        latitude:
+          type: number
+          example: 38.68438
+    Unit:
+      type: string
+      example: µg/m³
+    inline_response_200:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_results'
+    inline_response_200_1:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_1_results'
+    inline_response_200_2:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_2_results_1'
+    inline_response_200_3:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_3_results'
+    inline_response_200_4:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_4_results'
+    inline_response_200_5:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_5_results'
+    inline_response_200_6:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_6_results'
+    inline_response_200_7:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_7_results'
+    inline_response_200_results:
+      type: object
+      properties:
+        country:
+          type: string
+          example: MN
+        name:
+          type: string
+          example: Erdenet city
+        city:
+          type: string
+          example: Erdenet city
+        count:
+          type: integer
+          example: 301
+        locations:
+          type: integer
+          example: 2
+    inline_response_200_1_results:
+      type: object
+      properties:
+        code:
+          type: string
+          example: AD
+        name:
+          type: string
+          example: Andorra
+        cities:
+          type: integer
+          example: 2
+        count:
+          type: integer
+          example: 120587
+        locations:
+          type: integer
+          example: 3
+    inline_response_200_2_results:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 'New measurements inserted for Mandir Marg: 1'
+        failures:
+          type: object
+          example: {}
+        count:
+          type: integer
+          example: 0
+        duration:
+          type: number
+          format: float
+          example: 0.153
+        sourceName:
+          type: string
+          example: Mandir Marg
+    inline_response_200_2_results_1:
+      type: object
+      properties:
+        timeStarted:
+          type: string
+          format: date-time
+        timeEnded:
+          type: string
+          format: date-time
+        count:
+          type: integer
+          example: 0
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_2_results'
+    inline_response_200_3_averagingPeriod:
+      type: object
+      properties:
+        value:
+          type: number
+          example: 1
+        unit:
+          type: string
+          example: hours
+    inline_response_200_3_measurements:
+      type: object
+      properties:
+        parameter:
+          type: string
+          example: so2
+        value:
+          type: number
+          example: 19
+        lastUpdated:
+          type: string
+          format: date-time
+        unit:
+          type: string
+          example: µg/m³
+        sourceName:
+          type: string
+          example: ChinaAQIData
+        averagingPeriod:
+          $ref: '#/components/schemas/inline_response_200_3_averagingPeriod'
+    inline_response_200_3_results:
+      type: object
+      properties:
+        location:
+          type: string
+          example: 淮河道
+        country:
+          type: string
+          format: date-time
+        city:
+          type: string
+          example: 天津市
+        distance:
+          type: number
+          example: 7924560.861065163
+        measurements:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_3_measurements'
+    inline_response_200_4_countsByMeasurement:
+      type: object
+      properties:
+        parameter:
+          type: string
+        count:
+          type: integer
+    inline_response_200_4_results:
+      type: object
+      properties:
+        id:
+          type: string
+          example: US-4505
+        country:
+          type: string
+          example: US
+        city:
+          type: string
+          example: CA8 - ARB
+        cities:
+          type: array
+          items:
+            type: string
+            example: CA8 - ARB
+        location:
+          type: string
+          example: "1001"
+        locations:
+          type: array
+          items:
+            type: string
+            example: "1001"
+        sourceName:
+          type: string
+          example: AirNow
+        sourceNames:
+          type: array
+          items:
+            type: string
+            example: AirNow
+        sourceType:
+          type: string
+          example: government
+        sourceTypes:
+          type: array
+          items:
+            type: string
+            example: government
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        firstUpdated:
+          type: string
+          format: date-time
+        lastUpdated:
+          type: string
+          format: date-time
+        parameters:
+          type: array
+          items:
+            type: string
+            example: pm25
+        countsByMeasurement:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_4_countsByMeasurement'
+        count:
+          type: integer
+    inline_response_200_5_date:
+      type: object
+      properties:
+        utc:
+          type: string
+          format: date-time
+        local:
+          type: string
+          format: date-time
+    inline_response_200_5_results:
+      type: object
+      properties:
+        country:
+          type: string
+          example: CL
+        city:
+          type: string
+          example: Coyhaique
+        location:
+          type: string
+          example: Coyhaique
+        parameter:
+          type: string
+          example: pm25
+        date:
+          $ref: '#/components/schemas/inline_response_200_5_date'
+        value:
+          type: number
+          example: 81
+        unit:
+          type: string
+          example: µg/m³
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+    inline_response_200_6_results:
+      type: object
+      properties:
+        id:
+          type: string
+          example: bc
+        name:
+          type: string
+          example: BC
+        description:
+          type: string
+          example: Black Carbon
+        preferredUnit:
+          $ref: '#/components/schemas/Unit'
+    inline_response_200_7_results:
+      type: object
+      properties:
+        url:
+          type: string
+          example: http://www.arpalazio.net/main/aria/sci/annoincorso/chimici.php
+        adapter:
+          type: string
+          example: arpalazio
+        name:
+          type: string
+          example: ARPALAZIO
+        country:
+          type: string
+          example: IT
+        description:
+          type: string
+          example: Air quality data from Lazio region, Italy
+        sourceURL:
+          type: string
+          example: http://www.arpalazio.net/
+        contacts:
+          type: array
+          example: info@openaq.org
+          items:
+            type: string
+            format: email
+        active:
+          type: boolean
+          example: false
+  parameters:
+    limitParam:
+      name: limit
+      in: query
+      description: max records to return
+      required: false
+      style: form
+      explode: true
+      schema:
+        maximum: 10000.0
+        type: integer
+        format: int32
+        default: 100
+    pageParam:
+      name: page
+      in: query
+      description: Paginate through results
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: integer
+        format: int32
+        default: 1
+    sortParam:
+      name: sort
+      in: query
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        default: asc
+    cityParam:
+      name: city
+      in: query
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+    countryParam:
+      name: country
+      in: query
+      description: Two letter ISO code for a country
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+    locationParam:
+      name: location
+      in: query
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+    parameterParam:
+      name: parameter
+      in: query
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        enum:
+        - pm25
+        - pm10
+        - so2
+        - no2
+        - o3
+        - co
+        - bc
+    hasgeoParam:
+      name: has_geo
+      in: query
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: boolean
+        nullable: true
+    coordinatesParam:
+      name: coordinates
+      in: query
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+    radiusParam:
+      name: radius
+      in: query
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: integer
+        default: 2500
