@@ -1,2 +1,2 @@
 # openaq-swagger
-Swagger spec of OpenAQ API
+OpenAPI v3 spec of OpenAQ API
